@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
+import { jwtConstants } from './constants';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
@@ -17,16 +18,17 @@ export class AuthController {
     }
 
     @Post('login')
-    async login(@Body() request) {
-        
-        let login = await this.authService.authenticate(request.number, request.password);
+    async login(@Body() body) {
+        let login = await this.authService.authenticate(body.username, body.password);
 
         if (login) {
-            const { id, number } = login;
-            let access_token = this.JWTService.sign({id, number});
+            const { id } = login;
+            let access_token = this.JWTService.sign({ id });
 
             return {
+                status: 200,
                 message: "Login success",
+                expiresIn: jwtConstants.expiresIn,
                 access_token
             }
         }

@@ -6,32 +6,17 @@ export class Users {
     id: number
 
     @Column()
-    name: string
+    username: string
 
-    @Column({
-        type: 'char',
-        length: 16,
-        nullable: true
-    })
-    number: string
-
-    @Column({
-        nullable: true
-    })
-    domicilie: string
-
-    @Column({nullable: true, type: 'char', length: 10})
-    nip: string
-
-    @Column({nullable: true})
-    email: string
-
-    @Column({nullable: true, select: false})
+    @Column({select: false})
     password: string
 
-    @CreateDateColumn()
-    created_at: Date
+    @Column({type: 'boolean', default: 1})
+    isActive: boolean
 
-    @UpdateDateColumn()
-    updated_at: Date
+    @CreateDateColumn({select: false})
+    createdAt: Date
+
+    @UpdateDateColumn({select: false})
+    updatedAt: Date
 }
